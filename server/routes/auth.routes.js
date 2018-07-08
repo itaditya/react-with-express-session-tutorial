@@ -5,70 +5,66 @@ const User = require("../models/User");
 
 //POST route for updating data
 router.post("/signup", (req, res, next) => {
+  const { email, username, password, passwordConf } = req.body;
   // confirm that user typed same password twice
-  if (req.body.password !== req.body.passwordConf) {
-    const err = new Error("Passwords do not match.");
-    err.status = 400;
+  if (password !== passwordConf) {
+    const error = new Error("Passwords do not match.");
+    error.status = 400;
     res.send("passwords dont match");
-    return next(err);
+    return next(error);
   }
 
-  if (req.body.email && req.body.username && req.body.password) {
-    const userData = {
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password
-    };
+  if (!email || !username || !password) {
+    const error = new Error("All fields required.");
+    error.status = 400;
+    return next(error);
+  }
 
-    User.create(userData)
-      .then(user => {
-        req.session.userId = user._id;
-        return res.send({
-          message: "success"
-        });
-      })
-      .catch(error => {
-        if (error) {
-          return next(error);
-        }
+  const userData = { email, username, password };
+  User.create(userData)
+    .then(user => {
+      req.session.userId = user._id;
+      return res.send({
+        message: "success"
       });
-  } else {
-    const err = new Error("All fields required.");
-    err.status = 400;
-    return next(err);
-  }
+    })
+    .catch(next);
 });
 
 router.post("/login", (req, res, next) => {
-  if (req.body.email && req.body.password) {
-    User.authenticate(req.body.email, req.body.password, (err, user) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    const error = new Error("All fields required.");
+    error.status = 400;
+    return next(error);
+  }
+  User.authenticate(email, password)
+    .then(user => {
       if (!user) {
-        const err = new Error("Password is incorrect");
-        err.status = 400;
-        return next(err);
+        const error = new Error("Password is incorrect");
+        error.status = 400;
+        return next(error);
       }
       req.session.userId = user._id;
       return res.send({
         message: "success"
       });
-    });
-  } else {
-    const err = new Error("All fields required.");
-    err.status = 400;
-    return next(err);
-  }
+    })
+    .catch(next);
 });
 
 // GET for logout logout
 router.get("/logout", (req, res, next) => {
   if (req.session) {
     // delete session object
-    req.session.destroy(err => {
-      if (err) {
-        return next(err);
-      } else {
-        return res.redirect("/");
+    req.session.destroy(error => {
+      if (error) {
+        return next(error);
       }
+      return res.send({
+        message: "success"
+      });
     });
   }
 });
