@@ -22,7 +22,7 @@ class App extends React.Component {
       .then(res => res.json())
       .then(res => {
         this.setState({
-          pageViews: res.pageViews
+          pageViews: res.data.pageViews
         });
       });
 
@@ -33,7 +33,7 @@ class App extends React.Component {
       .then(res => {
         this.setState({
           profile: {
-            email: res.email
+            email: res.data.email
           }
         });
       })

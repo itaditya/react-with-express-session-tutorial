@@ -6,6 +6,7 @@ const session = require("express-session");
 const cors = require("cors");
 
 const routes = require("./routes/index.routes");
+const notFoundMw = require("./middlewares/notFound.mw");
 
 const MongoStore = require("connect-mongo")(session);
 const PORT = process.env.PORT || 5000;
@@ -18,7 +19,7 @@ const db = mongoose.connection;
 
 //handle mongo error
 db.on("error", () => console.error("Error in DB connection"));
-db.once("open", function() {
+db.once("open", () => {
   console.log("DB connected");
 });
 
@@ -54,20 +55,21 @@ app.get("/api/stats", (req, res) => {
   let pageViews = req.session.page_views || 0;
   pageViews += 1;
   req.session.page_views = pageViews;
-  res.send({ pageViews });
+  res.send({
+    message: "success",
+    data: { pageViews }
+  });
 });
 
-app.use((req, res, next) => {
-  const error = new Error("Not Found");
-  error.status = 404;
-  next(error);
-});
+app.use(notFoundMw);
 
 // error handler
 // define as the last app.use callback
 app.use((error, req, res, next) => {
   console.error(error);
-  res.status(error.status || 500).send(error.message);
+  res.status(error.status || 500).send({
+    message: error.message
+  });
 });
 
 app.listen(PORT, () => {

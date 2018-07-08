@@ -13,12 +13,11 @@ class Login extends Component {
     const { userEmail: email, userPassword: password } = this.state;
     loginService({ email, password })
       .then(res => {
+        console.log('res', res);
         console.log("logged in");
         this.props.onLogin({ email });
       })
-      .catch(errorRes => {
-        errorRes.text().then(error => console.error(error));
-      });
+      .catch(console.error);
   };
 
   handleFormChange = event => {

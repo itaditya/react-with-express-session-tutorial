@@ -11,16 +11,10 @@ export const signupService = ({ email, username, password, passwordConf }) => {
     },
     body: JSON.stringify({ email, username, password, passwordConf })
   })
-    .then(res => {
-      const p = new Promise((resolve, reject) => {
-        if (res.ok) {
-          return resolve(res);
-        }
-        return reject(res);
-      });
-      return p;
-    })
-    .catch(error => Promise.reject(error));
+    .then(async res => {
+      const jsonRes = await res.json();
+      return res.ok ? jsonRes : Promise.reject(jsonRes)
+    });
 };
 
 export const loginService = ({ email, password }) => {
@@ -33,30 +27,18 @@ export const loginService = ({ email, password }) => {
     },
     body: JSON.stringify({ email, password })
   })
-    .then(res => {
-      const p = new Promise((resolve, reject) => {
-        if (res.ok) {
-          return resolve(res);
-        }
-        return reject(res);
-      });
-      return p;
-    })
-    .catch(error => Promise.reject(error));
+    .then(async res => {
+      const jsonRes = await res.json();
+      return res.ok ? jsonRes : Promise.reject(jsonRes)
+    });
 };
 
 export const logoutService = () => {
   return fetch(`${API_URL}/logout`, {
     credentials: "include"
   })
-    .then(res => {
-      const p = new Promise((resolve, reject) => {
-        if (res.ok) {
-          return resolve(res);
-        }
-        return reject(res);
-      });
-      return p;
-    })
-    .catch(error => Promise.reject(error));
+    .then(async res => {
+      const jsonRes = await res.json();
+      return res.ok ? jsonRes : Promise.reject(jsonRes)
+    });
 };

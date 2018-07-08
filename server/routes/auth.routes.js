@@ -10,7 +10,7 @@ router.post("/signup", (req, res, next) => {
   if (password !== passwordConf) {
     const error = new Error("Passwords do not match.");
     error.status = 400;
-    res.send("passwords dont match");
+    res.send("Passwords don't match");
     return next(error);
   }
 
@@ -24,8 +24,10 @@ router.post("/signup", (req, res, next) => {
   User.create(userData)
     .then(user => {
       req.session.userId = user._id;
+      const userResponseData = { email, username };
       return res.send({
-        message: "success"
+        message: "success",
+        data: userResponseData
       });
     })
     .catch(next);
@@ -47,8 +49,13 @@ router.post("/login", (req, res, next) => {
         return next(error);
       }
       req.session.userId = user._id;
+      const userResponseData = {
+        email,
+        username: user.username
+      };
       return res.send({
-        message: "success"
+        message: "success",
+        data: userResponseData
       });
     })
     .catch(next);

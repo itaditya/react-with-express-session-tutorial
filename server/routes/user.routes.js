@@ -16,7 +16,10 @@ router.get("/profile", isAuthenticatedMw, (req, res, next) => {
         email: user.email,
         username: user.username
       };
-      res.send(userData);
+      res.send({
+        message: "success",
+        data: userData
+      });
     })
     .catch(next);
 });

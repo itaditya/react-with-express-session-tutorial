@@ -27,9 +27,7 @@ class Signup extends Component {
         console.log("signup successful");
         this.props.onSignup({ email });
       })
-      .catch(errorRes => {
-        errorRes.text().then(error => console.error(error));
-      });
+      .catch(console.error);
   };
 
   handleFormChange = event => {
