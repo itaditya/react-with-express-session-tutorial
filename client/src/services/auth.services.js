@@ -10,11 +10,10 @@ export const signupService = ({ email, username, password, passwordConf }) => {
       "Content-Type": "application/json; charset=utf-8"
     },
     body: JSON.stringify({ email, username, password, passwordConf })
-  })
-    .then(async res => {
-      const jsonRes = await res.json();
-      return res.ok ? jsonRes : Promise.reject(jsonRes)
-    });
+  }).then(async res => {
+    const jsonRes = await res.json();
+    return res.ok ? jsonRes : Promise.reject(jsonRes);
+  });
 };
 
 export const loginService = ({ email, password }) => {
@@ -26,19 +25,17 @@ export const loginService = ({ email, password }) => {
       "Content-Type": "application/json; charset=utf-8"
     },
     body: JSON.stringify({ email, password })
-  })
-    .then(async res => {
-      const jsonRes = await res.json();
-      return res.ok ? jsonRes : Promise.reject(jsonRes)
-    });
+  }).then(async res => {
+    const jsonRes = await res.json();
+    return res.ok ? jsonRes : Promise.reject(jsonRes);
+  });
 };
 
 export const logoutService = () => {
   return fetch(`${API_URL}/logout`, {
     credentials: "include"
-  })
-    .then(async res => {
-      const jsonRes = await res.json();
-      return res.ok ? jsonRes : Promise.reject(jsonRes)
-    });
+  }).then(async res => {
+    const jsonRes = await res.json();
+    return res.ok ? jsonRes : Promise.reject(jsonRes);
+  });
 };
