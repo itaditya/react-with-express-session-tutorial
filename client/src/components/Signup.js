@@ -25,7 +25,9 @@ class Signup extends Component {
     signupService({ email, username, password, passwordConf })
       .then(res => {
         console.log("signup successful");
-        this.props.onSignup({ email });
+        if (this.props.onSignup) {
+          this.props.onSignup({ email });
+        }
       })
       .catch(console.error);
   };

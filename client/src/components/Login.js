@@ -4,8 +4,8 @@ import { loginService } from "../services/auth.services";
 
 class Login extends Component {
   state = {
-    userEmail: "",
-    userPassword: ""
+    userEmail: "git2adi@gmail.com",
+    userPassword: "pass"
   };
 
   handleFormSubmit = event => {
@@ -13,9 +13,10 @@ class Login extends Component {
     const { userEmail: email, userPassword: password } = this.state;
     loginService({ email, password })
       .then(res => {
-        console.log("res", res);
         console.log("logged in");
-        this.props.onLogin({ email });
+        if (this.props.onLogin) {
+          this.props.onLogin({ email });
+        }
       })
       .catch(console.error);
   };
