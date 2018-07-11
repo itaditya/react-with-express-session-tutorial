@@ -1,46 +1,47 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const wrapperStyle = {
+const Navbar = ({ brandName, navLinks, actionButton }) => (
+  <div style={style.wrapper}>
+    <div style={style.brand}>{brandName}</div>
+    <ul style={style.linksWrapper}>
+      {navLinks.map(({ to, text }) => (
+        <li style={style.linkItem} key={to}>
+          <NavLink exact to={to}>{text}</NavLink>
+        </li>
+      ))}
+      <li>
+        {actionButton}
+      </li>
+    </ul>
+  </div>
+);
+
+const style = {}
+
+style.wrapper = {
   height: "60px",
   background: "#ddd",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   padding: "0 20px"
-};
+}
 
-const brandStyle = {
+style.brand = {
   fontSize: "20px"
 };
 
-const linksWrapperStyle = {
-  margin: "0",
+style.linksWrapper = {
+  margin: "0 0 0 auto",
   padding: "0",
-  width: "40%",
   listStyle: "none",
   display: "flex",
   justifyContent: "space-evenly"
 };
 
-const Navbar = () => (
-  <div style={wrapperStyle}>
-    <div style={brandStyle}>React Auth Demo</div>
-    <ul style={linksWrapperStyle}>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/signin">Sign In</Link>
-      </li>
-      <li>
-        <Link to="/dashboard">Dashboard</Link>
-      </li>
-      <li>
-        <Link to="/profile">Profile</Link>
-      </li>
-    </ul>
-  </div>
-);
+style.linkItem = {
+  padding: "0 10px"
+}
 
 export default Navbar;

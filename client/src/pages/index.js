@@ -7,33 +7,14 @@ import { logoutService } from "../services/auth.services";
 import DashboardPage from "./dashboard";
 import SigninPage from "./signin";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Navbar from "../components/Navbar";
+import Appbar from "../components/app/Appbar";
 
 class IndexPage extends Component {
   constructor(props) {
     super(props);
-    this.login = ({ email }) => {
-      this.setState({
-        userEmail: email
-      });
-    };
-    this.logout = async () => {
-      try {
-        console.log("logging out");
-        await logoutService();
-        this.setState({
-          userEmail: ""
-        });
-        console.log("logged out");
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     this.state = {
-      userEmail: "",
-      login: this.login,
-      logout: this.logout
+      userEmail: ""
     };
   }
   componentDidMount() {
@@ -46,13 +27,30 @@ class IndexPage extends Component {
       .catch(console.error);
   }
 
-  handleLogout = async () => {
+  login = ({ email }) => {
+    this.setState({
+      userEmail: email
+    });
+  };
+
+  logout = async () => {
+    try {
+      console.log("logging out");
+      await logoutService();
+      this.setState({
+        userEmail: ""
+      });
+      console.log("logged out");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  handleLogout = () => {
     this.logout();
   };
 
   render() {
-    const isAuthenticated = !!this.state.userEmail;
-    console.log("isAuthenticated", isAuthenticated);
     return (
       <div>
         <Router>
@@ -60,8 +58,12 @@ class IndexPage extends Component {
             path="/"
             render={() => (
               <div>
-                <Navbar />
-                <GlobalContext.Provider value={this.state}>
+                <GlobalContext.Provider value={{
+                  userEmail: this.state.userEmail,
+                  login: this.login,
+                  logout: this.logout
+                }}>
+                  <Appbar />
                   <Switch>
                     <Route exact path="/" render={props => <h2>Home</h2>} />
                     <ProtectedRoute

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { signupService } from "../services/auth.services";
+import { signupService } from "../../services/auth.services";
 
 class Signup extends Component {
   state = {

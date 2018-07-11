@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
-import { loginService } from "../services/auth.services";
+import { loginService } from "../../services/auth.services";
 
 class Login extends Component {
+  // for quickly loggin in, I have filled the credentials, in real app userEmail, userPassword should be empty strings.
   state = {
     userEmail: "git2adi@gmail.com",
     userPassword: "pass"

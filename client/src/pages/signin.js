@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { Redirect } from "react-router-dom";
 
 import GlobalContext from "../contexts/globalContext";
-import Signup from "../components/Signup";
-import Login from "../components/Login";
+import Signup from "../components/app/Signup";
+import Login from "../components/app/Login";
 
 class SigninPage extends Component {
   render() {
@@ -15,7 +15,7 @@ class SigninPage extends Component {
               {userEmail ? (
                 <Redirect to="/" />
               ) : (
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                   <Signup />
                   <Login onLogin={login} />
                 </div>
